@@ -1,34 +1,67 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { FormEvent, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [task, setTask] = useState('')
+  const [tasks, setTasks] = useState<string[]>([])
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const trimmedTask = task.trim()
+
+    if (!trimmedTask) {
+      return
+    }
+
+    setTasks((currentTasks) => [...currentTasks, trimmedTask])
+    setTask('')
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+    <main className="app-shell">
+      <section className="task-card">
+        <p className="eyebrow">Task tracker</p>
+        <h1>Реалізуйте трекер завдань</h1>
+        <p className="description">
+          Додайте завдання у поле нижче, натисніть кнопку і побачите список
+          нижче.
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+
+        <form className="task-form" onSubmit={handleSubmit}>
+          <label className="sr-only" htmlFor="task-input">
+            Назва завдання
+          </label>
+          <input
+            id="task-input"
+            type="text"
+            value={task}
+            onChange={(event) => setTask(event.target.value)}
+            placeholder="Наприклад: підготувати звіт"
+          />
+          <button type="submit" disabled={!task.trim()}>
+            Додати
+          </button>
+        </form>
+
+        <div className="task-list-block" aria-live="polite">
+          <div className="task-list-header">
+            <h2>Список завдань</h2>
+            <span>{tasks.length}</span>
+          </div>
+
+          {tasks.length > 0 ? (
+            <ul className="task-list">
+              {tasks.map((item, index) => (
+                <li key={`${item}-${index}`}>{item}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="empty-state">Поки що немає доданих завдань.</p>
+          )}
+        </div>
+      </section>
+    </main>
   )
 }
 

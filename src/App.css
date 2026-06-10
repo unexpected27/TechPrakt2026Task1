@@ -126,6 +126,49 @@
   border: 1px solid rgba(148, 163, 184, 0.14);
 }
 
+.task-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.task-item:hover {
+  transform: none;
+}
+
+.task-item__text {
+  font-size: 1rem;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.task-item__status {
+  flex-shrink: 0;
+  font-size: 0.84rem;
+  color: rgba(226, 232, 240, 0.72);
+}
+
+.task-item--completed .task-item__text {
+  text-decoration: line-through;
+  color: rgba(148, 163, 184, 0.82);
+}
+
+.task-item--completed .task-item__status {
+  color: #86efac;
+}
+
+.task-item:focus-visible {
+  outline: 2px solid #7dd3fc;
+  outline-offset: 4px;
+}
+
 .empty-state {
   margin: 18px 0 0;
   color: rgba(226, 232, 240, 0.72);
@@ -155,5 +198,10 @@
 
   .task-form button {
     width: 100%;
+  }
+
+  .task-item {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
